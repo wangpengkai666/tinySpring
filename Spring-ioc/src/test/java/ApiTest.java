@@ -13,7 +13,8 @@ public class ApiTest {
         // register the definition to factory
         defaultListableBeanFactory.registerBeanDefinition(UserService.class.getName(),beanDefinition);
         // get singleton instance
-        UserService userService = (UserService)defaultListableBeanFactory.getBean(UserService.class.getName());
+        //UserService userService = (UserService)defaultListableBeanFactory.getBean(UserService.class.getName());
+        UserService userService = (UserService)defaultListableBeanFactory.getBean(UserService.class.getName(),"wpk",12);
         userService.queryUserInfo();
         // get singleton instance from single cache
         userService = (UserService)defaultListableBeanFactory.getBean(UserService.class.getName());

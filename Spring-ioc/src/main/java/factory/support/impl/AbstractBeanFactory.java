@@ -2,6 +2,7 @@ package factory.support.impl;
 
 import factory.config.impl.BeanDefinition;
 import factory.support.interfaces.BeanFactory;
+import factory.support.interfaces.InstantiationStrategy;
 
 /**
  * @author wangpengkai
@@ -20,6 +21,23 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         return createBean(beanName, beanDefinition);
     }
 
+    @Override
+    public Object getBean(String beanName, Object... args) {
+        // get object from singleton cache
+        Object singleton = getSingleton(beanName);
+        if (singleton != null) {
+            return singleton;
+        }
+        // build the definition bean to get an instance
+        BeanDefinition beanDefinition = getBeanDefinition(beanName);
+        try {
+            return createBean(beanName, beanDefinition, args);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * create Bean and add to cache from name and its definition
      *
@@ -28,6 +46,16 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
      * @return
      */
     protected abstract Object createBean(String beanName, BeanDefinition beanDefinition);
+
+    /**
+     * create Bean and add to cache from name and its definition with args
+     *
+     * @param beanName
+     * @param beanDefinition
+     * @param args
+     * @return
+     */
+    protected abstract Object createBean(String beanName, BeanDefinition beanDefinition, Object... args) throws Exception;
 
     /**
      * abstract:get beanDefinition from beanName
