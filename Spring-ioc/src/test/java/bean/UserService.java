@@ -1,15 +1,17 @@
 package bean;
 
-public class UserService {
-    private String name;
-    private Integer age;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    UserService(String name, Integer age) {
-        this.name = name;
-        this.age = age;
-    }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserService {
+    private int uId;
+    private UserDAO userDAO;
 
     public void queryUserInfo() {
-        System.out.println("----query some info:tiny spring run----");
+        System.out.println(userDAO.queryUserName(uId));
     }
 }

@@ -1,5 +1,6 @@
 package factory.config.impl;
 
+import factory.PropertyValues;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,10 +11,24 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class BeanDefinition {
     /**
-     *  enclosure bean-class
+     * enclosure bean-class
      */
     private Class beanClass;
+
+    /**
+     * property-values of bean
+     */
+    private PropertyValues propertyValues;
+
+    public BeanDefinition(Class beanClass) {
+        this.beanClass = beanClass;
+        this.propertyValues = new PropertyValues();
+    }
+
+    public BeanDefinition(Class beanClass, PropertyValues propertyValues) {
+        this.beanClass = beanClass;
+        this.propertyValues = propertyValues;
+    }
 }
