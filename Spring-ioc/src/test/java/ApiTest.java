@@ -1,10 +1,8 @@
-import bean.UserDAO;
-import bean.UserService;
-import factory.PropertyValue;
-import factory.PropertyValues;
-import factory.config.impl.BeanDefinition;
-import factory.config.impl.BeanReference;
-import factory.support.impl.DefaultListableBeanFactory;
+import bean.*;
+import bean.factory.config.impl.BeanDefinition;
+import bean.factory.config.impl.BeanReference;
+import bean.factory.support.impl.DefaultListableBeanFactory;
+import bean.factory.support.impl.XmlBeanDefinitionReader;
 import org.testng.annotations.Test;
 
 public class ApiTest {
@@ -42,6 +40,15 @@ public class ApiTest {
         beanFactory.registerBeanDefinition("userService", beanDefinition);
 
         // 5. UserService get bean
+        UserService userService = (UserService) beanFactory.getBean("userService");
+        userService.queryUserInfo();
+    }
+
+    @Test
+    public void testXML() throws BeansException {
+        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+        reader.loadBeanDefinitions("src/main/resources/bean.xml");
         UserService userService = (UserService) beanFactory.getBean("userService");
         userService.queryUserInfo();
     }
