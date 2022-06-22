@@ -3,11 +3,12 @@ import bean.factory.config.impl.BeanDefinition;
 import bean.factory.config.impl.BeanReference;
 import bean.factory.support.impl.DefaultListableBeanFactory;
 import bean.factory.support.impl.XmlBeanDefinitionReader;
+import context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
 
 public class ApiTest {
     @Test
-    public void testRepo() {
+    public void testRepo() throws BeansException {
         // create a new Factory
         DefaultListableBeanFactory defaultListableBeanFactory = new DefaultListableBeanFactory();
         // create the definition of class
@@ -24,7 +25,7 @@ public class ApiTest {
     }
 
     @Test
-    public void testProperty() {
+    public void testProperty() throws BeansException {
         // 1.init BeanFactory
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
         // 2. UserDao register
@@ -50,6 +51,13 @@ public class ApiTest {
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
         reader.loadBeanDefinitions("src/main/resources/bean.xml");
         UserService userService = (UserService) beanFactory.getBean("userService");
+        userService.queryUserInfo();
+    }
+
+    @Test
+    public void testXMLContext() throws BeansException {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("src/main/resources/bean.xml");
+        UserService userService = (UserService) classPathXmlApplicationContext.getBean("userService");
         userService.queryUserInfo();
     }
 }

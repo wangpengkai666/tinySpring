@@ -24,7 +24,7 @@ public class PropertyValues {
      * get property list from the bean
      * @return
      */
-    public List<PropertyValue> getPropertyValue() {
+    public List<PropertyValue> getPropertyValues() {
         return propertyValueList;
     }
 

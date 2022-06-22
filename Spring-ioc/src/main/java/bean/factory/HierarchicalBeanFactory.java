@@ -1,4 +1,7 @@
 package bean.factory;
 
-public class HierarchicalBeanFactory {
+/**
+ * @author wangpengkai
+ */
+public interface HierarchicalBeanFactory extends BeanFactory{
 }

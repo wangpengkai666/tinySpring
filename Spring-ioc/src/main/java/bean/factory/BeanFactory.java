@@ -1,23 +1,17 @@
 package bean.factory;
 
+import bean.BeansException;
+
 import javax.management.ObjectName;
 
 /**
  * @author wangpengkai
  */
 public interface BeanFactory {
-    /**
-     * get beanObject from name
-     * @param name
-     * @return
-     */
-    public Object getBean(String name);
+    Object getBean(String name) throws BeansException;
 
-    /**
-     * get beanObject from name,args(use the parametric constructor of reflections)
-     * @param name
-     * @param args
-     * @return
-     */
-    public Object getBean(String name, Object... args);
+    Object getBean(String name, Object... args) throws BeansException;
+
+    <T> T getBean(String name, Class<T> requiredType) throws BeansException;
+
 }
