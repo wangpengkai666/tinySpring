@@ -60,4 +60,12 @@ public class ApiTest {
         UserService userService = (UserService) classPathXmlApplicationContext.getBean("userService");
         userService.queryUserInfo();
     }
+
+    @Test
+    public void testInitAndDestroy() {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("src/main/resources/bean.xml");
+        classPathXmlApplicationContext.registerShutdownHook();
+        UserService userService = (UserService) classPathXmlApplicationContext.getBean("userService");
+        userService.queryUserInfo();
+    }
 }
