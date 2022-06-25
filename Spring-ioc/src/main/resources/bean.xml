@@ -5,4 +5,5 @@
         <property name="uId" value="1"/>
         <property name="userDAO" ref="userDAO"/>
     </bean>
+    <bean id="proxyUserDao" class="bean.ProxyFactoryBean"/>
 </beans>

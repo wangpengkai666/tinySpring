@@ -68,4 +68,13 @@ public class ApiTest {
         UserService userService = (UserService) classPathXmlApplicationContext.getBean("userService");
         userService.queryUserInfo();
     }
+
+    @Test
+    public void testFactoryBean() {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("src/main/resources/bean.xml");
+        classPathXmlApplicationContext.registerShutdownHook();
+        IUserDao iUserDao = (IUserDao)classPathXmlApplicationContext.getBean("proxyUserDao");
+        String s = iUserDao.queryUserName("1");
+        System.out.println("代理的结果是"+s);
+    }
 }
