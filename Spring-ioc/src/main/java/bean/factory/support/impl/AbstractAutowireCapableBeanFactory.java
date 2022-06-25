@@ -6,6 +6,10 @@ import bean.PropertyValues;
 import bean.factory.DisposableBean;
 import bean.factory.InitializingBean;
 import bean.factory.config.impl.*;
+import bean.factory.support.Aware;
+import bean.factory.support.BeanClassLoaderAware;
+import bean.factory.support.BeanFactoryAware;
+import bean.factory.support.BeanNameAware;
 import cn.hutool.core.bean.BeanUtil;
 import bean.factory.support.interfaces.InstantiationStrategy;
 import cn.hutool.core.util.StrUtil;
@@ -93,19 +97,36 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) throws BeansException {
-        // 1. 执行 BeanPostProcessor Before 处理
+        // 1.开始处理aware接口的实现方法
+        applyAwareProcess(bean,beanName);
+
+        // 2. 执行 BeanPostProcessor Before 处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
 
-        // 执行 Bean 对象的初始化方法
+        // 3.执行 Bean 对象的初始化方法
         try {
             invokeInitMethods(beanName, wrappedBean, beanDefinition);
         } catch (Exception e) {
             throw new BeansException();
         }
 
-        // 2. 执行 BeanPostProcessor After 处理
+        // 4. 执行 BeanPostProcessor After 处理
         wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
         return wrappedBean;
+    }
+
+    private void applyAwareProcess(Object bean, String beanName) {
+        if(bean instanceof Aware) {
+            if(bean instanceof BeanNameAware) {
+                ((BeanNameAware) bean).setBeanName(beanName);
+            }
+            if(bean instanceof BeanClassLoaderAware) {
+                ((BeanFactoryAware)bean).setBeanFactory(this);
+            }
+            if(bean instanceof BeanClassLoaderAware) {
+                ((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
+            }
+        }
     }
 
     private void invokeInitMethods(String beanName, Object bean, BeanDefinition beanDefinition) throws Exception {
