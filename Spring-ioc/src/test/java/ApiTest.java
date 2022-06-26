@@ -4,6 +4,7 @@ import bean.factory.config.impl.BeanReference;
 import bean.factory.support.impl.DefaultListableBeanFactory;
 import bean.factory.support.impl.XmlBeanDefinitionReader;
 import context.support.ClassPathXmlApplicationContext;
+import event.CustomEvent;
 import org.testng.annotations.Test;
 
 public class ApiTest {
@@ -76,5 +77,12 @@ public class ApiTest {
         IUserDao iUserDao = (IUserDao)classPathXmlApplicationContext.getBean("proxyUserDao");
         String s = iUserDao.queryUserName("1");
         System.out.println("代理的结果是"+s);
+    }
+
+    @Test
+    public void listerEventTest() {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("src/main/resources/bean.xml");
+        classPathXmlApplicationContext.publishEvent(new CustomEvent(classPathXmlApplicationContext,12345L,"success"));
+        classPathXmlApplicationContext.registerShutdownHook();
     }
 }

@@ -6,4 +6,7 @@
         <property name="userDAO" ref="userDAO"/>
     </bean>
     <bean id="proxyUserDao" class="bean.ProxyFactoryBean"/>
+    <bean class="event.ContextRefreshedEventListener"/>
+    <bean class="event.CustomEventListener"/>
+    <bean class="event.ContextClosedEventListener"/>
 </beans>
