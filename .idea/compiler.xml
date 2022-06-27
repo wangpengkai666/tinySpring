@@ -9,5 +9,8 @@
         <module name="Spring-ioc" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Spring-framwork" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
