@@ -1,4 +1,7 @@
-import aop.*;
+import aop.AdvisedSupport;
+import aop.MethodMatcher;
+import aop.TargetSource;
+import aoptest.*;
 import aop.aspectj.AspectJExpressionPointcut;
 import aop.framework.Cglib2AopProxy;
 import aop.framework.JdkDynamicAopProxy;
@@ -17,7 +20,6 @@ import org.testng.annotations.Test;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Random;
 
 public class ApiTest {
     @Test
@@ -102,7 +104,7 @@ public class ApiTest {
     public void test_aop() throws NoSuchMethodException {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut("execution(* aop.IUserService.*(..))");
 
-        Class<UserService> clazz = UserService.class;
+        Class<aoptest.UserService> clazz = aoptest.UserService.class;
         Method method = clazz.getDeclaredMethod("queryUserInfo");
 
         System.out.println(pointcut.matches(clazz));
@@ -112,7 +114,7 @@ public class ApiTest {
     @Test
     public void test_dynamic() {
         // 目标对象
-        IUserService userService = new aop.UserService();
+        IUserService userService = new aoptest.UserService();
         // 组装代理信息
         AdvisedSupport advisedSupport = new AdvisedSupport();
         advisedSupport.setTargetSource(new TargetSource(userService));
@@ -141,7 +143,7 @@ public class ApiTest {
     @Test
     public void test_proxy_method() {
         // 目标对象(可以替换成任何的目标对象)
-        Object targetObj = new aop.UserService();
+        Object targetObj = new aoptest.UserService();
 
         // AOP 代理
         IUserService proxy = (IUserService) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), targetObj.getClass().getInterfaces(), new InvocationHandler() {
@@ -172,6 +174,13 @@ public class ApiTest {
 
         String result = proxy.queryUserInfo();
         System.out.println("测试结果：" + result);
+    }
 
+    @Test
+    public void test_aop2() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("src/main/resources/bean.xml");
+
+        IUserService userService = applicationContext.getBean("userService", IUserService.class);
+        System.out.println("测试结果：" + userService.queryUserInfo());
     }
 }

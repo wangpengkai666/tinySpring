@@ -1,4 +1,4 @@
-package aop;
+package aoptest;
 
 public interface IUserService {
     String queryUserInfo();

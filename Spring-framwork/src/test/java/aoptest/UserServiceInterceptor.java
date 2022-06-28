@@ -1,10 +1,9 @@
-package aop;
+package aoptest;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class UserServiceInterceptor implements MethodInterceptor {
     @Override

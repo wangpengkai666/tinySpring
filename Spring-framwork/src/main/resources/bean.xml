@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
-    <bean id="userDAO" class="bean.UserDAO" init-method="initMethod" destroy-method="destroyMethod"/>
-    <bean id="userService" class="bean.UserService">
-        <property name="uId" value="1"/>
-        <property name="userDAO" ref="userDAO"/>
+<!--    <bean id="userDAO" class="bean.UserDAO" init-method="initMethod" destroy-method="destroyMethod"/>-->
+<!--    <bean id="userService" class="bean.UserService">-->
+<!--        <property name="uId" value="1"/>-->
+<!--        <property name="userDAO" ref="userDAO"/>-->
+<!--    </bean>-->
+<!--    <bean id="proxyUserDao" class="bean.ProxyFactoryBean"/>-->
+<!--    <bean class="event.ContextRefreshedEventListener"/>-->
+<!--    <bean class="event.CustomEventListener"/>-->
+<!--    <bean class="event.ContextClosedEventListener"/>-->
+    <bean id="pointcutAdvisor" class="aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* aoptest.IUserService.*(..))"/>
+        <property name="advice" ref="methodInterceptor"/>
     </bean>
-    <bean id="proxyUserDao" class="bean.ProxyFactoryBean"/>
-    <bean class="event.ContextRefreshedEventListener"/>
-    <bean class="event.CustomEventListener"/>
-    <bean class="event.ContextClosedEventListener"/>
+    <bean class="aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+    <bean id="beforeAdvice" class="aoptest.UserServiceBeforeAdvice"/>
+    <bean id="methodInterceptor" class="aop.framework.adapter.MethodBeforeAdviceInterceptor">
+        <property name="advice" ref="beforeAdvice"/>
+    </bean>
+    <bean id="userService" class="aoptest.UserService"/>
 </beans>
