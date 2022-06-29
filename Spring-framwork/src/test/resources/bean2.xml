@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <component-scan base-package="aoptest"/>
+    <bean id="userService" class="aoptest.UserService">
+        <property name="token" value="wpk-token-test"></property>
+    </bean>
+</beans>

@@ -183,4 +183,18 @@ public class ApiTest {
         IUserService userService = applicationContext.getBean("userService", IUserService.class);
         System.out.println("测试结果：" + userService.queryUserInfo());
     }
+
+    @Test
+    public void placeHolderTest() {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:bean3.xml");
+        IUserService userService = classPathXmlApplicationContext.getBean("userService", IUserService.class);
+        System.out.println(userService.queryUserInfo());
+    }
+
+    @Test
+    public void packageScanTest() {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:bean2.xml");
+        IUserService userService = classPathXmlApplicationContext.getBean("userService", IUserService.class);
+        System.out.println(userService.queryUserInfo());
+    }
 }

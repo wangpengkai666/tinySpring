@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean class="bean.factory.support.impl.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:token.properties"></property>
+    </bean>
+    <bean id="userService" class="aoptest.UserService">
+        <property name="token" value="${token}"></property>
+    </bean>
+</beans>

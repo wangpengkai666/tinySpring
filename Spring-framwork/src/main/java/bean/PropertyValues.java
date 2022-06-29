@@ -21,6 +21,14 @@ public class PropertyValues {
     }
 
     /**
+     * add list property of bean to a list
+     * @param prvs
+     */
+    public void addPropertyValue(List<PropertyValue> prvs) {
+        propertyValueList.addAll(prvs);
+    }
+
+    /**
      * get property list from the bean
      * @return
      */

@@ -1,15 +1,23 @@
 package aoptest;
 
+import lombok.Data;
+import stereotype.Component;
+
+import java.lang.annotation.Documented;
 import java.util.Random;
 
-public class UserService implements IUserService{
+@Component("UserService")
+@Data
+public class UserService implements IUserService {
+    private String token;
+
     public String queryUserInfo() {
         try {
             Thread.sleep(new Random(1).nextInt(100));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return "AOP test";
+        return "token=" + token;
     }
 
     public String register(String userName) {

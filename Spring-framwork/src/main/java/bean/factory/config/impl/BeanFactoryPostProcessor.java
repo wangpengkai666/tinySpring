@@ -3,6 +3,8 @@ package bean.factory.config.impl;
 import bean.BeansException;
 import bean.factory.ConfigurableListableBeanFactory;
 
+import java.io.IOException;
+
 /**
  * @author wangpengkai
  */
