@@ -4,6 +4,7 @@ import aop.*;
 import aop.aspectj.AspectJExpressionPointcutAdvisor;
 import aop.framework.ProxyFactory;
 import bean.BeansException;
+import bean.PropertyValues;
 import bean.factory.BeanFactory;
 import bean.factory.config.interfaces.InstantiationAwareBeanPostProcessor;
 import bean.factory.support.BeanFactoryAware;
@@ -44,6 +45,16 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
         }
 
         return null;
+    }
+
+    @Override
+    public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+        return true;
+    }
+
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+        return pvs;
     }
 
     @Override

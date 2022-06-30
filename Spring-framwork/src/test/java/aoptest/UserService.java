@@ -1,5 +1,7 @@
 package aoptest;
 
+import bean.factory.annotation.Autowired;
+import bean.factory.annotation.Value;
 import lombok.Data;
 import stereotype.Component;
 
@@ -9,7 +11,11 @@ import java.util.Random;
 @Component("UserService")
 @Data
 public class UserService implements IUserService {
+    @Value("${token}")
     private String token;
+
+    @Autowired
+    private UserDAO userDAO;
 
     public String queryUserInfo() {
         try {
@@ -17,7 +23,7 @@ public class UserService implements IUserService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return "token=" + token;
+        return "token=" + token + userDAO;
     }
 
     public String register(String userName) {

@@ -1,5 +1,6 @@
 package context.annotation;
 
+import bean.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import bean.factory.config.impl.BeanDefinition;
 import bean.factory.support.interfaces.BeanDefinitionRegistry;
 import cn.hutool.core.util.ClassUtil;
@@ -31,6 +32,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
                 registry.registerBeanDefinition(determineBeanName(beanDefinition), beanDefinition);
             }
         }
+
+        // 注册处理注解的 BeanPostProcessor（@Autowired、@Value）
+        registry.registerBeanDefinition("bean.factory.support.impl.AbstractAutowireCapableBeanFactory", new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
     private String resolveBeanScope(BeanDefinition beanDefinition) {

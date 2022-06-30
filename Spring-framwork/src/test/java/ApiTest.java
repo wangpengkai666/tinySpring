@@ -7,6 +7,7 @@ import aop.framework.Cglib2AopProxy;
 import aop.framework.JdkDynamicAopProxy;
 import aop.framework.ReflectiveMethodInvocation;
 import bean.*;
+import bean.UserDAO;
 import bean.UserService;
 import bean.factory.config.impl.BeanDefinition;
 import bean.factory.config.impl.BeanReference;
@@ -180,14 +181,14 @@ public class ApiTest {
     public void test_aop2() {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("src/main/resources/bean.xml");
 
-        IUserService userService = applicationContext.getBean("userService", IUserService.class);
+        IUserService userService = applicationContext.getBean("userservice", IUserService.class);
         System.out.println("测试结果：" + userService.queryUserInfo());
     }
 
     @Test
     public void placeHolderTest() {
         ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:bean3.xml");
-        IUserService userService = classPathXmlApplicationContext.getBean("userService", IUserService.class);
+        IUserService userService = classPathXmlApplicationContext.getBean("userservice", IUserService.class);
         System.out.println(userService.queryUserInfo());
     }
 
