@@ -1,4 +1,4 @@
-package io;
+package core.io;
 
 import lombok.Data;
 import org.springframework.util.Assert;

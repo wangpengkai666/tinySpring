@@ -2,6 +2,7 @@ package bean.factory.config.impl;
 
 import bean.factory.HierarchicalBeanFactory;
 import bean.factory.config.interfaces.SingletonBeanRegistry;
+import core.convert.ConversionService;
 import utils.StringValueResolver;
 
 /**
@@ -36,4 +37,16 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
      * @since 3.0
      */
     String resolveEmbeddedValue(String value);
+
+    /**
+     * Specify a Spring 3.0 ConversionService to use for converting
+     * property values, as an alternative to JavaBeans PropertyEditors.
+     */
+    void setConversionService(ConversionService conversionService);
+
+    /**
+     * Return the associated ConversionService, if any.
+     * @since 3.0
+     */
+    ConversionService getConversionService();
 }

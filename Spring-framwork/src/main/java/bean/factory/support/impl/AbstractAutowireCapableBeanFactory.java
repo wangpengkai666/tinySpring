@@ -14,6 +14,8 @@ import bean.factory.support.BeanNameAware;
 import cn.hutool.core.bean.BeanUtil;
 import bean.factory.support.interfaces.InstantiationStrategy;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.TypeUtil;
+import core.convert.ConversionService;
 import lombok.Data;
 
 import java.lang.reflect.Constructor;
@@ -41,18 +43,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         Object bean = null;
         try {
             // 实例化操作
-            bean = createBeanInstance(beanDefinition,beanName,args);
+            bean = createBeanInstance(beanDefinition, beanName, args);
 
             // 处理循环依赖，把创建好的bean提前暴露出来
-            if(beanDefinition.isSingleton()) {
+            if (beanDefinition.isSingleton()) {
                 Object finalBean = bean;
                 addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, beanDefinition, finalBean));
 
                 // 实例化之后的判断
                 boolean continueWithPropertyPopulation = applyBeanPostProcessorsAfterInstantiation(beanName, bean);
-                if(!continueWithPropertyPopulation) return bean;
+                if (!continueWithPropertyPopulation) return bean;
                 // 在设置 Bean 属性之前，允许 BeanPostProcessor 修改属性值
-                applyBeanPostProcessorsBeforeApplyingPropertyValues(bean,beanName,beanDefinition);
+                applyBeanPostProcessorsBeforeApplyingPropertyValues(bean, beanName, beanDefinition);
                 // 给 Bean 填充属性
                 applyPropertyValues(beanName, bean, beanDefinition);
                 // 执行 Bean 的初始化方法和 BeanPostProcessor 的前置和后置处理方法
@@ -62,7 +64,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             throw new BeansException();
         }
 
-        registerDisposableBeanIfNecessary(beanName,bean,beanDefinition);
+        registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
         // 判断 SCOPE_SINGLETON、SCOPE_PROTOTYPE
         Object exposedObject = bean;
         if (beanDefinition.isSingleton()) {
@@ -151,11 +153,23 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                     BeanReference beanReference = (BeanReference) value;
                     value = getBean(beanReference.getBeanName());
                 }
-                // 属性填充
+                // 类型转换
+                else {
+                    Class<?> sourceType = value.getClass();
+                    Class<?> targetType = (Class<?>) TypeUtil.getFieldType(bean.getClass(), name);
+                    ConversionService conversionService = getConversionService();
+                    if (conversionService != null) {
+                        if (conversionService.canConvert(sourceType, targetType)) {
+                            value = conversionService.convert(value, targetType);
+                        }
+                    }
+                }
+
+                // 反射设置属性填充
                 BeanUtil.setFieldValue(bean, name, value);
             }
         } catch (Exception e) {
-            throw new BeansException();
+            throw new BeansException("Error setting property values：" + beanName + " message：" + e);
         }
     }
 

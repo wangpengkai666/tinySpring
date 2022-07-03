@@ -6,6 +6,7 @@ import bean.factory.config.impl.BeanDefinition;
 import bean.factory.BeanFactory;
 import bean.factory.config.impl.BeanPostProcessor;
 import bean.factory.config.impl.ConfigurableBeanFactory;
+import core.convert.ConversionService;
 import org.springframework.util.ClassUtils;
 import utils.StringValueResolver;
 
@@ -26,6 +27,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
      * String resolvers to apply e.g. to annotation attribute values
      */
     private final List<StringValueResolver> embeddedValueResolvers = new ArrayList<>();
+
+    private ConversionService conversionService;
 
     @Override
     public Object getBean(String name) throws BeansException {
@@ -86,6 +89,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
     public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor){
         this.beanPostProcessors.remove(beanPostProcessor);
         this.beanPostProcessors.add(beanPostProcessor);
+    }
+
+    @Override
+    public void setConversionService(ConversionService conversionService) {
+        this.conversionService = conversionService;
+    }
+
+    @Override
+    public ConversionService getConversionService() {
+        return conversionService;
     }
 
     /**

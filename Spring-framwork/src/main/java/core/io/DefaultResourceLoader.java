@@ -1,4 +1,4 @@
-package io;
+package core.io;
 
 import org.springframework.util.Assert;
 

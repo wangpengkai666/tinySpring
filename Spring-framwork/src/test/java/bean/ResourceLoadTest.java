@@ -1,8 +1,8 @@
 package bean;
 
 import cn.hutool.core.io.IoUtil;
-import io.DefaultResourceLoader;
-import io.Resource;
+import core.io.DefaultResourceLoader;
+import core.io.Resource;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -6,9 +6,8 @@ import bean.PropertyValues;
 import bean.factory.ConfigurableListableBeanFactory;
 import bean.factory.config.impl.BeanDefinition;
 import bean.factory.config.impl.BeanFactoryPostProcessor;
-import bean.factory.config.impl.BeanPostProcessor;
-import io.DefaultResourceLoader;
-import io.Resource;
+import core.io.DefaultResourceLoader;
+import core.io.Resource;
 import utils.StringValueResolver;
 
 import java.io.IOException;

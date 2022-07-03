@@ -2,7 +2,7 @@ package context;
 
 import bean.factory.HierarchicalBeanFactory;
 import bean.factory.ListableBeanFactory;
-import io.ResourceLoader;
+import core.io.ResourceLoader;
 
 /**
  * @author wangpengkai

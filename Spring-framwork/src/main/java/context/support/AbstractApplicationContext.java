@@ -13,7 +13,7 @@ import context.event.ApplicationEventMulticaster;
 import context.event.ContextClosedEvent;
 import context.event.ContextRefreshedEvent;
 import context.event.SimpleApplicationEventMulticaster;
-import io.DefaultResourceLoader;
+import core.io.DefaultResourceLoader;
 
 import java.util.Collection;
 import java.util.Map;

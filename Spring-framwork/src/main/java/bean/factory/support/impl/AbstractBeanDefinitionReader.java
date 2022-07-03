@@ -2,8 +2,8 @@ package bean.factory.support.impl;
 
 import bean.factory.support.interfaces.BeanDefinitionReader;
 import bean.factory.support.interfaces.BeanDefinitionRegistry;
-import io.DefaultResourceLoader;
-import io.ResourceLoader;
+import core.io.DefaultResourceLoader;
+import core.io.ResourceLoader;
 import lombok.Data;
 
 /**

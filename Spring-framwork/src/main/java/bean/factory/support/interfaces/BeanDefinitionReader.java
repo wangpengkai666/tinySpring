@@ -1,8 +1,8 @@
 package bean.factory.support.interfaces;
 
 import bean.BeansException;
-import io.Resource;
-import io.ResourceLoader;
+import core.io.Resource;
+import core.io.ResourceLoader;
 
 /**
  * @author wangpengkai

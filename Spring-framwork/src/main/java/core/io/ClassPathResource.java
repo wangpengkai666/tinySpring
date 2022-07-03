@@ -1,8 +1,6 @@
-package io;
+package core.io;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
