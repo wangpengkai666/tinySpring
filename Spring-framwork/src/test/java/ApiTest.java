@@ -13,6 +13,8 @@ import bean.factory.config.impl.BeanDefinition;
 import bean.factory.config.impl.BeanReference;
 import bean.factory.support.impl.DefaultListableBeanFactory;
 import bean.factory.support.impl.XmlBeanDefinitionReader;
+import circular_dependency.Husband;
+import circular_dependency.Wife;
 import context.support.ClassPathXmlApplicationContext;
 import event.CustomEvent;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -197,5 +199,14 @@ public class ApiTest {
         ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:bean2.xml");
         IUserService userService = classPathXmlApplicationContext.getBean("userService", IUserService.class);
         System.out.println(userService.queryUserInfo());
+    }
+
+    @Test
+    public void test_circular() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:bean4.xml");
+        Husband husband = applicationContext.getBean("husband", Husband.class);
+        Wife wife = applicationContext.getBean("wife", Wife.class);
+        System.out.println("老公的媳妇：" + husband.queryWife());
+        System.out.println("媳妇的老公：" + wife.queryHusband());
     }
 }
