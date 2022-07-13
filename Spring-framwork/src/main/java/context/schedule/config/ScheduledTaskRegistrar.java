@@ -39,7 +39,7 @@ public class ScheduledTaskRegistrar implements InitializingBean, DisposableBean 
     protected void scheduleTasks() {
         if(taskScheduler==null) {
             localExecutor = Executors.newSingleThreadScheduledExecutor();
-            taskScheduler = new ConcurrentTaskScheduler();
+            taskScheduler = new ConcurrentTaskScheduler(this.localExecutor);
         }
 
         if (this.cronTasks != null) {
@@ -68,7 +68,15 @@ public class ScheduledTaskRegistrar implements InitializingBean, DisposableBean 
             newTask = true;
         }
 
-        addCronTask(task);
+        // 在第二次执行的时候就会把对应的调度器设置好，从而进入if的分支当中
+        if (this.taskScheduler != null) {
+            scheduledTask.future = this.taskScheduler.schedule(task.getRunnable(), task.getTrigger());
+        }
+        else {
+            addCronTask(task);
+            this.unresolvedTasks.put(task, scheduledTask);
+        }
+
         this.unresolvedTasks.put(task, scheduledTask);
 
         return (newTask ? scheduledTask : null);

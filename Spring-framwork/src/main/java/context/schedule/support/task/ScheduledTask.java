@@ -7,7 +7,7 @@ import java.util.concurrent.ScheduledFuture;
 public class ScheduledTask {
     private final Task task;
 
-    volatile ScheduledFuture<?> future;
+    public volatile ScheduledFuture<?> future;
 
     public ScheduledTask(Task task) {
         this.task = task;

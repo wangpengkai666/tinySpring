@@ -24,11 +24,12 @@ import java.util.TimeZone;
 public class ScheduledAnnotationBeanPostProcessor implements ApplicationListener<ContextRefreshedEvent>, BeanPostProcessor,
         ApplicationContextAware {
 
+    public static final String beanName = "scheduledAnnotationBeanPostProcessor";
     private ScheduledTaskRegistrar scheduledTaskRegistrar;
     
     private ApplicationContext applicationContext;
 
-    ScheduledAnnotationBeanPostProcessor() {
+    public ScheduledAnnotationBeanPostProcessor() {
         scheduledTaskRegistrar = new ScheduledTaskRegistrar();
     }
     @Override

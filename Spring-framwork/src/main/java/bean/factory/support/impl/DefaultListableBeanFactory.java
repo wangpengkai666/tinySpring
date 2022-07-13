@@ -5,10 +5,7 @@ import bean.factory.ConfigurableListableBeanFactory;
 import bean.factory.support.interfaces.BeanDefinitionRegistry;
 import bean.factory.config.impl.BeanDefinition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -18,9 +15,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
+    /**
+     * 这里主要是记录内部人工导入的配置类对象
+     */
+    private volatile Set<String> manualSingletonNames = new LinkedHashSet<>(16);
+
     @Override
     public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
         beanDefinitionMap.put(beanName, beanDefinition);
+    }
+
+    public void registerManualSingleton(String beanName, Object bean) {
+        if (!manualSingletonNames.contains(beanName)) {
+            manualSingletonNames.add(beanName);
+            registerSingleton(beanName, bean);
+        }
     }
 
     @Override
@@ -41,6 +50,20 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
                 }
             }
         });
+
+        // 开始寻找到手工创建的类中的属性
+        manualSingletonNames.forEach(manualName->{
+            Object bean = getSingleton(manualName);
+            Class beanClass = bean.getClass();
+            if (type.isAssignableFrom(beanClass)) {
+                try {
+                    result.put(manualName, (T)bean);
+                } catch (BeansException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return result;
     }
 
@@ -70,8 +93,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
                 beanNames.add(entry.getKey());
             }
         }
-        if (1 == beanNames.size()) {
-            return getBean(beanNames.get(0), requiredType);
+
+        for (String manualName : manualSingletonNames) {
+            Object bean = getSingleton(manualName);
+            if (requiredType.isAssignableFrom(bean.getClass())) {
+                return (T) bean;
+            }
         }
 
         throw new BeansException(requiredType + "expected single bean but found " + beanNames.size() + ": " + beanNames);

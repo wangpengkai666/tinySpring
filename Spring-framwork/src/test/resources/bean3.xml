@@ -3,8 +3,8 @@
     <bean class="bean.factory.support.impl.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:token.properties"></property>
     </bean>
-<!--    <bean id="userService" class="aoptest.UserService">-->
-<!--        <property name="token" value="${token}"></property>-->
-<!--    </bean>-->
+    <bean id="userService" class="aoptest.UserService">
+        <property name="token" value="${token}"></property>
+    </bean>
     <component-scan base-package="aoptest"/>
 </beans>

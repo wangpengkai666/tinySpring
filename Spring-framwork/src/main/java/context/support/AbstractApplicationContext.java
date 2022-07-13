@@ -6,6 +6,7 @@ import bean.factory.ConfigurableListableBeanFactory;
 import bean.factory.config.impl.ApplicationContextAwareProcessor;
 import bean.factory.config.impl.BeanFactoryPostProcessor;
 import bean.factory.config.impl.BeanPostProcessor;
+import bean.factory.support.impl.DefaultListableBeanFactory;
 import context.ApplicationEvent;
 import context.ApplicationListener;
 import context.ConfigurableApplicationContext;
@@ -13,6 +14,7 @@ import context.event.ApplicationEventMulticaster;
 import context.event.ContextClosedEvent;
 import context.event.ContextRefreshedEvent;
 import context.event.SimpleApplicationEventMulticaster;
+import context.schedule.support.ScheduledAnnotationBeanPostProcessor;
 import core.io.DefaultResourceLoader;
 
 import java.util.Collection;
@@ -38,26 +40,32 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         // 2. 获取 BeanFactory
         ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 
-        // 3.构建一个处理器，方便后续application容器对象的感知
+        // 3.预创建spring系统中预先配置的bean对象
+        preInitInnnerConfigBean(beanFactory);
+
+        // 4.构建一个处理器，方便后续application容器对象的感知
         beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
-        // 4. 在 Bean 实例化之前，执行 BeanFactoryPostProcessor (Invoke factory processors registered as beans in the context.)
+        // 5. 在 Bean 实例化之前，执行 BeanFactoryPostProcessor (Invoke factory processors registered as beans in the context.)
         invokeBeanFactoryPostProcessors(beanFactory);
 
-        // 5. BeanPostProcessor 需要提前于其他 Bean 对象实例化之前执行注册操作
+        // 6. BeanPostProcessor 需要提前于其他 Bean 对象实例化之前执行注册操作
         registerBeanPostProcessors(beanFactory);
 
-        // 6. 初始化事件发布者
+        // 7. 初始化事件发布者
         initApplicationEventMulticaster();
 
-        // 7. 注册事件监听器
+        // 8. 注册事件监听器
         registerListeners();
 
-        // 8. 提前实例化单例Bean对象
+        // 9. 提前实例化单例Bean对象
         beanFactory.preInstantiateSingletons();
 
-        // 9. 发布容器刷新完成事件
+        // 10. 发布容器刷新完成事件
         finishRefresh();
+    }
+
+    private void preInitInnnerConfigBean(ConfigurableListableBeanFactory beanFactory) {
     }
 
     @Override
@@ -96,10 +104,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     }
 
     private void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+        // 预先加载系统内部创建的处理类
+        registerInnerBeanPostProcessors(beanFactory);
+
         Map<String, BeanPostProcessor> beanPostProcessorMap = beanFactory.getBeansOfType(BeanPostProcessor.class);
         for (BeanPostProcessor beanPostProcessor : beanPostProcessorMap.values()) {
             beanFactory.addBeanPostProcessor(beanPostProcessor);
         }
+    }
+
+    private void registerInnerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+
     }
 
     @Override

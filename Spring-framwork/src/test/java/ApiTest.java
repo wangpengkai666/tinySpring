@@ -193,8 +193,7 @@ public class ApiTest {
     @Test
     public void placeHolderTest() {
         ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:bean3.xml");
-        IUserService userService = classPathXmlApplicationContext.getBean("userservice", IUserService.class);
-        System.out.println(userService.queryUserInfo());
+        System.out.println("test");
     }
 
     @Test
@@ -236,5 +235,12 @@ public class ApiTest {
 
         Converter<String, Long> stringToLongConverter = converterFactory.getConverter(Long.class);
         System.out.println("测试结果：" + stringToLongConverter.convert("1234"));
+    }
+
+    @Test
+    public void ScheduledTest() {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:bean6.xml");
+        System.out.println("test");
+        while (true);
     }
 }

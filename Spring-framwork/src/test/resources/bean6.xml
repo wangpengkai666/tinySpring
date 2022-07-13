@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id = "scheduledAnnotationBeanPostProcessor" class="context.schedule.support.ScheduledAnnotationBeanPostProcessor">
+    </bean>
+    <bean id="scheduledTest" class="schduledTest.ScheduledTest">
+    </bean>
+</beans>
