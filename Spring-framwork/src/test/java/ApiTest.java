@@ -238,9 +238,25 @@ public class ApiTest {
     }
 
     @Test
-    public void ScheduledTest() {
+    public void scheduledTest() {
         ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:bean6.xml");
         System.out.println("test");
         while (true);
+    }
+
+    @Test
+    public void ThreadTest() {
+        new Thread(()->{
+            while (true) {
+                System.out.println(Thread.currentThread().getName());
+            }
+        },"test").start();
+
+        System.out.println(Thread.currentThread().getName());
+    }
+
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:bean6.xml");
+        System.out.println("test");
     }
 }
