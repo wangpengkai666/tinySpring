@@ -9,7 +9,7 @@ public class ScheduledTask {
 
     volatile ScheduledFuture<?> future;
 
-    ScheduledTask(Task task) {
+    public ScheduledTask(Task task) {
         this.task = task;
     }
 
