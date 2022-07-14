@@ -21,6 +21,7 @@ import core.convert.converter.Converter;
 import core.convert.support.StringToNumberConverterFactory;
 import event.CustomEvent;
 import org.aopalliance.intercept.MethodInterceptor;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.InvocationHandler;
@@ -246,13 +247,8 @@ public class ApiTest {
 
     @Test
     public void ThreadTest() {
-        new Thread(()->{
-            while (true) {
-                System.out.println(Thread.currentThread().getName());
-            }
-        },"test").start();
-
-        System.out.println(Thread.currentThread().getName());
+        Thread test = new Thread(() -> {}, "test");
+        Assert.assertTrue(test.isDaemon());
     }
 
     public static void main(String[] args) {
